@@ -109,12 +109,64 @@ The bedrock of Nashville today consists primarily of Ordovician limestone format
 
 ## Installation
 
+### Quick Start with npx (Recommended)
+
+The fastest way to use this MCP server is with npx and the git URL:
+
+```bash
+npx -y github:ptbsare/macrostrat-mcp-server
+```
+
+For Claude Desktop, add this to your configuration:
+
+```json
+{
+    "mcpServers": {
+        "macrostrat": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "github:ptbsare/macrostrat-mcp-server"
+            ]
+        }
+    }
+}
+```
+
 ### Installing via Smithery
 
 To install Macrostrat API Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@blake365/macrostrat-mcp):
 
 ```bash
 npx -y @smithery/cli install @blake365/macrostrat-mcp --client claude
+```
+
+### Manual Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ptbsare/macrostrat-mcp-server.git
+cd macrostrat-mcp-server
+```
+
+2. Install dependencies and build:
+```bash
+npm install
+npm run build:stdio
+```
+
+3. Configure Claude Desktop with the full path:
+```json
+{
+    "mcpServers": {
+        "macrostrat": {
+            "command": "node",
+            "args": [
+                "/full/path/to/macrostrat-mcp-server/build/index.js"
+            ]
+        }
+    }
+}
 ```
 
 ### Extra Steps
@@ -125,13 +177,13 @@ If you want to make changes to the server you can do so by editing the `src/inde
 - Quit and restart Claude Desktop after making changes
 
 
-## Connecting with Claude Desktop
+## Connecting with Claude Desktop (Manual Path)
 
 1. Open your Claude Desktop configuration at:
    - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
-2. Add the server configuration:
+2. Add the server configuration (if not using npx method above):
 ```json
 {
     "mcpServers": {

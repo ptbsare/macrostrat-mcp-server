@@ -1,25 +1,29 @@
 {
-	"name": "macrostrat",
+	"name": "@blake365/macrostrat-mcp",
 	"version": "1.0.0",
-	"main": "index.js",
+	"main": "build/index.js",
 	"module": "./src/index.ts",
 	"type": "module",
 	"bin": {
+		"macrostrat-mcp": "./build/index.js",
 		"macrostrat": "./build/index.js"
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "npx @smithery/cli build",
-		"build:stdio": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+		"build:stdio": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\" && node -e \"const fs=require('fs');const content=fs.readFileSync('build/index.js','utf8');if(!content.startsWith('#!')){fs.writeFileSync('build/index.js','#!/usr/bin/env node\\n'+content)}\"",
 		"build:http": "npx @smithery/cli build",
 		"dev": "npx @smithery/cli dev",
 		"dev:stdio": "tsx src/index.ts",
-		"start": "tsx src/index.ts"
+		"start": "node build/index.js",
+		"prepublishOnly": "npm run build:stdio"
 	},
 	"files": [
-		"build"
+		"build",
+		"src",
+		"package.json"
 	],
-	"keywords": ["macrostrat", "geology", "stratigraphy"],
+	"keywords": ["macrostrat", "geology", "stratigraphy", "mcp"],
 	"author": "Blake Morgan",
 	"license": "MIT",
 	"description": "Macrostrat MCP Server - Access geological data, rock units, formations, and stratigraphic information worldwide",
@@ -33,5 +37,11 @@
 	"devDependencies": {
 		"@smithery/cli": "^1.2.20",
 		"tsx": "^4.20.5"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

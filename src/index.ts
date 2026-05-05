@@ -1330,14 +1330,27 @@ Step 6: Provide both the tile URLs and detailed analysis of the geological featu
 }
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-  
+
 // STDIO transport support for Claude Desktop
 // Check if this file is being run directly (not imported)
-if (process.argv[1] && process.argv[1].endsWith('index.js')) {
+// Works with: direct node execution, npx, and symlinks
+const isMainModule = () => {
+  const argv1 = process.argv[1];
+  if (!argv1) return false;
+
+  // Normalize path and check various patterns
+  const normalized = argv1.replace(/\\/g, '/');
+  return normalized.endsWith('index.js') ||
+         normalized.endsWith('macrostrat') ||
+         normalized.endsWith('macrostrat-mcp') ||
+         normalized.includes('macrostrat-mcp-server');
+};
+
+if (isMainModule()) {
   // This runs when executed directly with node (STDIO mode)
   const server = createServer({ config: {} });
   const transport = new StdioServerTransport();
-  
+
   server.connect(transport).catch((error) => {
     console.error("Failed to start STDIO server:", error);
     process.exit(1);

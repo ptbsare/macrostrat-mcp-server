@@ -1343,7 +1343,8 @@ const isMainModule = () => {
   return normalized.endsWith('index.js') ||
          normalized.endsWith('macrostrat') ||
          normalized.endsWith('macrostrat-mcp') ||
-         normalized.includes('macrostrat-mcp-server');
+         normalized.includes('macrostrat-mcp-server') ||
+         normalized.includes('.bin/');
 };
 
 if (isMainModule()) {
